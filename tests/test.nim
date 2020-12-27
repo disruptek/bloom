@@ -15,7 +15,7 @@ testes:
     y = 100_000_000   ## highest integer
 
   var filter: ref Bloom[k, n]
-  var found = initIntSet()
+  var found: ref IntSet
   var count, unfound: int
   var needle: int
 
@@ -24,15 +24,17 @@ testes:
     count = 0
     randomize()
     filter = new (ref Bloom[k, n])
+    found = new (ref IntSet)
+    found[] = initIntSet()
     while count < x:
       let q = rand(y)
-      if q notin found:
-        found.incl q
+      if q notin found[]:
+        found[].incl q
         inc count
 
   block:
     ## perform insertion on the filter
-    for q in found:
+    for q in found[]:
       filter[].add q
 
   block:
@@ -40,7 +42,7 @@ testes:
     while true:
       needle = rand(y)
       if needle notin filter[]:
-        if needle notin found:
+        if needle notin found[]:
           break
 
   block stringification:
@@ -53,7 +55,7 @@ testes:
     count = 0
     while unfound != x:
       let q = rand(y)
-      if q notin found:
+      if q notin found[]:
         inc unfound
         if q in filter[]:
           inc count
@@ -63,7 +65,7 @@ testes:
   block:
     ## calculate false negatives
     count = 0
-    for q in found.items:
+    for q in found[].items:
       if q notin filter[]:
         inc count
     checkpoint fmt"{count} false negatives, or {100 * count / x:0.2f}%"
@@ -75,7 +77,7 @@ testes:
       skip "windows is slow"
     else:
       let clock = cpuTime()
-      check needle notin found
+      check needle notin found[]
       let lap = cpuTime()
       check needle notin filter[]
       let done = cpuTime()
