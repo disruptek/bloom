@@ -14,7 +14,7 @@ testes:
     x = 100_000       ## random entries
     y = 100_000_000   ## highest integer
 
-  var filter: Bloom[k, n]
+  var filter: ref Bloom[k, n]
   var found = initIntSet()
   var count, unfound: int
   var needle: int
@@ -23,6 +23,7 @@ testes:
     ## setup some random data
     count = 0
     randomize()
+    filter = new (ref Bloom[k, n])
     while count < x:
       let q = rand(y)
       if q notin found:
@@ -32,19 +33,19 @@ testes:
   block:
     ## perform insertion on the filter
     for q in found:
-      filter.add q
+      filter[].add q
 
   block:
     ## save a needle
     while true:
       needle = rand(y)
-      if needle notin filter:
+      if needle notin filter[]:
         if needle notin found:
           break
 
   block stringification:
     checkpoint fmt"filter has {k} layers of {n} units; distribution:"
-    checkpoint filter
+    checkpoint filter[]
     checkpoint fmt"filter size: {filter.sizeof} bytes"
 
   block:
@@ -54,7 +55,7 @@ testes:
       let q = rand(y)
       if q notin found:
         inc unfound
-        if q in filter:
+        if q in filter[]:
           inc count
     checkpoint fmt"{count} false positives, or {100 * count / x:0.2f}%"
     check count.float < 0.02 * x
@@ -63,7 +64,7 @@ testes:
     ## calculate false negatives
     count = 0
     for q in found.items:
-      if q notin filter:
+      if q notin filter[]:
         inc count
     checkpoint fmt"{count} false negatives, or {100 * count / x:0.2f}%"
     check count == 0
@@ -76,7 +77,7 @@ testes:
       let clock = cpuTime()
       check needle notin found
       let lap = cpuTime()
-      check needle notin filter
+      check needle notin filter[]
       let done = cpuTime()
       var (a, b) = (done - lap, lap - clock)
       var fast = "bloom"
