@@ -1,0 +1,8 @@
+Bloom	bloom.html#Bloom	bloom: Bloom	
+contains	bloom.html#contains,Bloom[K,N],Bloomable	bloom: contains[K, N](bloom: Bloom[K, N]; item: Bloomable): bool	
+`and`	bloom.html#and,Bloom[K,N],Bloom[K,N]	bloom: `and`[K, N](a, b: Bloom[K, N]): Bloom[K, N]	
+`or`	bloom.html#or,Bloom[K,N],Bloom[K,N]	bloom: `or`[K, N](a, b: Bloom[K, N]): Bloom[K, N]	
+add	bloom.html#add,Bloom[K,N],Bloomable	bloom: add[K, N](bloom: var Bloom[K, N]; item: Bloomable)	
+del	bloom.html#del,Bloom,Bloomable	bloom: del(bloom: var Bloom; item: Bloomable)	
+`$`	bloom.html#$,Bloom[K,N]	bloom: `$`[K, N](bloom: Bloom[K, N]): string	
+clear	bloom.html#clear,Bloom	bloom: clear(bloom: var Bloom)	
