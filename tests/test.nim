@@ -3,11 +3,11 @@ import std/strformat
 import std/intsets
 import std/times
 
-import testes
+import balls
 import bloom
 
 proc hack() =
-  testes:
+  suite "bloom":
     ## bloom filter test parameters:
     const
       k = 20            ## layer count
