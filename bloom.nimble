@@ -4,7 +4,7 @@ description = "bloom filters"
 license = "MIT"
 
 when not defined(release):
-  requires "https://github.com/disruptek/balls#rc"
+  requires "https://github.com/disruptek/balls >= 3.0.0 & < 4.0.0"
 
 task test, "run unit tests":
   when defined(windows):
